@@ -1,0 +1,21 @@
+# env:
+env_name: cobotta
+# Note that the default encoder for visual observations outputs a 1024D vector; for other embedding sizes an additional fully-connected layer is used
+taskset_name: cobotta
+info_names: []
+symbolic_env: False
+observation_shapes: 
+  image_horizon: [3, 64, 64]
+  sound: [128, 20]
+  end_effector: [3]
+  servo_value: [3]
+  pose_quat: [3]
+  d_pose_quat_v2: [3]
+  d_pose_quat_v2_prev: [3]
+  dummy: [1]
+action_name: "servo_value"
+action_size: 3
+action_repeat: 1
+episodes: 
+bit_depth: 5
+episode_horizon

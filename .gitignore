@@ -1,0 +1,24 @@
+# cache
+*.ipynb_checkpoints
+*.pyc
+
+# train/test data to learn RSSM
+# dataset/ENV_NAME/TASK_NAME
+# dataset/*/*/*
+*.npy
+*.pth
+
+# train results and logs
+train/*/*/*/*/figs
+train/*/*/*/*/results
+train/*/*/*/*/test
+train/*/*/*/*/.hydra
+train/*/*/*/*/mlruns
+train/*/*/*/*/multirun
+train/*/*/*/*/outputs
+train/*/*/*/*/tmp
+
+# visualize results
+*.gif
+*.mp4
+*.png

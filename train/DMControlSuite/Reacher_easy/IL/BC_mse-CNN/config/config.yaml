@@ -1,0 +1,7 @@
+defaults:
+- main: main
+- env: reacher-easy
+- model: model
+- train: train
+- planner: planner
+  

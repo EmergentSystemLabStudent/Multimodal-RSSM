@@ -1,0 +1,20 @@
+# main:
+experiment_name: 
+tags:
+log_dir:
+algo: rssm
+seed: 0
+disable_cuda: False
+device: cuda:0
+test: False
+test_interval: 2000
+test_episodes: 5
+validation_interval: 10
+checkpoint_interval: 1000
+checkpoint_experience: False
+models: ""
+
+# log
+mlflow: False
+wandb : True
+git_hash:

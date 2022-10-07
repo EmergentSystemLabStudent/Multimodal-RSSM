@@ -1,0 +1,4 @@
+# planner:
+optimisation_iters: 10
+candidates: 1_000
+top_candidates: 100

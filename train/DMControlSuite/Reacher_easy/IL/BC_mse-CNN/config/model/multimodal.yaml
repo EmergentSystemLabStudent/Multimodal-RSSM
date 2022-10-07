@@ -1,0 +1,45 @@
+# model:
+observation_names: ["image_horizon", "sound"]
+reconstruction_names: ["image_horizon", "sound"]
+# condition_names: ["d_pose_quat_v2"]
+condition_names: ["servo_value"]
+predictive_target: 
+predict_reward: False
+# expert_dist: "q(st|ht,ot)"
+expert_dist: "q(st|ot)"
+coefficients:
+  image_horizon: 1
+  sound: 1
+  pose_quat: 1
+  pose_quat_next: 1
+  pose_quat_v2: 1
+  pose_quat_v2_next: 1
+  d_pose_quat_v2: 1
+  d_pose_quat_v2_prev: 1
+
+cnn_activation_function: relu
+dense_activation_function: elu
+embedding_size: 1024
+visual_embedding_size: 1024
+sound_embedding_size: 256
+symbolic_embedding_size: 128
+hidden_size: 200
+belief_size: 200
+state_size: 30
+worldmodel_LogProbLoss: False
+overshooting_distance: 50
+overshooting_kl_beta: 0
+overshooting_reward_scale: 0
+global_kl_beta: 0
+free_nats: 3
+
+model_learning_rate: 1e-3
+actor_learning_rate: 8e-5
+value_learning_rate: 8e-5
+learning_rate_schedule: 0
+adam_epsilon: 1e-7
+# Note that original has a linear learning rate decay, but it seems unlikely that this makes a significant difference
+grad_clip_norm: 100.0
+planning_horizon: 2
+discount: 0.99
+disclam: 0.95

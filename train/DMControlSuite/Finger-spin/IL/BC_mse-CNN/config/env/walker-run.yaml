@@ -1,0 +1,19 @@
+# env:
+env_config:
+  env_name: walker-run
+  horizon: 1000
+
+# Note that the default encoder for visual observations outputs a 1024D vector; for other embedding sizes an additional fully-connected layer is used
+taskset_name: dm_control
+info_names: []
+symbolic_env: False
+observation_shapes: 
+  image: [3, 64, 64]
+action_name: "action"
+action_size: 6
+action_repeat: 2
+episodes: 1000
+bit_depth: 5
+noise_scale: 0.
+add_noise: False
+noisy_background: False
