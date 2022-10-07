@@ -4,6 +4,7 @@ from torch.nn import functional as F
 
 from common.utils import imagine_ahead, FreezeParameters
 
+from common.models.policy import ActorModel
 from algos.base.base import Model_base
 
 import wandb
@@ -11,22 +12,29 @@ import wandb
 class IL_base(Model_base):
     def __init__(self, cfg, device):
         super().__init__(cfg, device)
-        # self.backprop_policy_grad = cfg.train.backprop_policy_grad
-        self.backprop_policy_grad = False
     
+    def init_models(self, device):
+        self.actor_model = ActorModel(self.cfg.model.belief_size, self.cfg.model.state_size, self.cfg.model.hidden_size,
+                                self.cfg.env.action_size, self.cfg.model.activation_function.dense).to(device=device)
+    
+    def init_optimizer(self):
+        self.actor_optimizer = optim.Adam(self.actor_model.parameters(
+        ), lr=0 if self.cfg.model.learning_rate_schedule != 0 else self.cfg.model.actor_learning_rate, eps=self.cfg.model.adam_epsilon)
+
+    def get_state_dict(self):
+        state_dict = {'actor_model': self.actor_model.state_dict(),
+                      'rssm': self.rssm.get_state_dict(),
+                     }
+        return state_dict
+
     def calc_BC_logprob_loss(self, actions, nonterminals, states):
         with torch.cuda.amp.autocast(enabled=self.cfg.train.use_amp):
             beliefs             = states["beliefs"]
             posterior_states    = states["posterior_states"]
 
-            # Dreamer implementation: actor loss calculation and optimization
-            if self.backprop_policy_grad:
-                actor_states = posterior_states
-                actor_beliefs = beliefs
-            else:
-                with torch.no_grad():
-                    actor_states = posterior_states.detach()
-                    actor_beliefs = beliefs.detach()
+            with torch.no_grad():
+                actor_states = posterior_states.detach()
+                actor_beliefs = beliefs.detach()
             
             logprobs = []
             for t in range(0, self.cfg.train.chunk_size - 1):
@@ -40,10 +48,6 @@ class IL_base(Model_base):
             beliefs             = states["beliefs"]
             posterior_states    = states["posterior_states"]
 
-            # Dreamer implementation: actor loss calculation and optimization
-            if self.backprop_policy_grad:
-                actor_states = posterior_states
-                actor_beliefs = beliefs
             with torch.no_grad():
                 actor_states = posterior_states.detach()
                 actor_beliefs = beliefs.detach()
@@ -121,21 +125,7 @@ class IL_base(Model_base):
                 wandb.log(data={"BC_logprob_loss/train":bc_logprob_loss.item()}, step=itr_optim)
                 bc_mse_loss = self.calc_BC_mse_loss(actions, nonterminals, states)
                 wandb.log(data={"BC_mse_loss/train":bc_mse_loss.item()}, step=itr_optim)
-                # Ts = [2,3,4,5,10,15]
-                Ts = [2]
-                for T in Ts:
-                    kl_prior_loss = self.calc_KL_Min_IL_prior_loss(actions, nonterminals, states, T)
-                    wandb.log(data={"KL_Min_IL_prior_T{}_loss/train".format(T):kl_prior_loss.item()}, step=itr_optim)
-                    kl_posterior_loss = self.calc_KL_Min_IL_posterior_loss(actions, nonterminals, states, T)
-                    wandb.log(data={"KL_Min_IL_posterior_T{}_loss/train".format(T):kl_posterior_loss.item()}, step=itr_optim)
-
-                    div_belief_loss = self.calc_Div_Min_IL_belief_loss(actions, nonterminals, states, T)
-                    wandb.log(data={"Div_Min_IL_belief_T{}_loss/train".format(T):div_belief_loss.item()}, step=itr_optim)
-                    div_prior_loss = self.calc_Div_Min_IL_prior_loss(actions, nonterminals, states, T)
-                    wandb.log(data={"Div_Min_IL_prior_T{}_loss/train".format(T):div_prior_loss.item()}, step=itr_optim)
-                    div_posterior_loss = self.calc_Div_Min_IL_posterior_loss(actions, nonterminals, states, T)
-                    wandb.log(data={"Div_Min_IL_posterior_T{}_loss/train".format(T):div_posterior_loss.item()}, step=itr_optim)
-
+                
     def validation(self,
                     D,
                     ):

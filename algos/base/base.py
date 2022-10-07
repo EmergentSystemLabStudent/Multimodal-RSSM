@@ -113,6 +113,7 @@ class Model_base:
         self.value_model.train()
 
     def init_models(self, device):
+        raise NotImplementedError
         self.actor_model = ActorModel(self.cfg.model.belief_size, self.cfg.model.state_size, self.cfg.model.hidden_size,
                                 self.cfg.env.action_size, self.cfg.model.activation_function.dense).to(device=device)
         self.value_model = ValueModel(self.cfg.model.belief_size, self.cfg.model.state_size, self.cfg.model.hidden_size,

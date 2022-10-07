@@ -25,8 +25,7 @@ class RL(Model_base):
         else:
             self.planner = MPCPlanner(cfg.env.action_size, cfg.model.planning_horizon, cfg.planner.optimisation_iters,
                                 cfg.planner.candidates, cfg.planner.top_candidates, self.rssm.transition_model, self.rssm.reward_model)
-        
-
+    
     def init_models(self, device):
         self.actor_model = ActorModel(self.cfg.model.belief_size, self.cfg.model.state_size, self.cfg.model.hidden_size,
                                 self.cfg.env.action_size, self.cfg.model.activation_function.dense).to(device=device)
