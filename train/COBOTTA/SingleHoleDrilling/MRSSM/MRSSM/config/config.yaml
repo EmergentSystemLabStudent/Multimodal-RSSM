@@ -1,0 +1,6 @@
+defaults:
+- main: main
+- env: SingleHoleDrilling
+- rssm: multimodal
+- train: train
+  

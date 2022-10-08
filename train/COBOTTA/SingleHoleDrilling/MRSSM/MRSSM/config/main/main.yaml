@@ -1,0 +1,11 @@
+# main:
+experiment_name: 
+tags:
+log_dir:
+seed: 0
+disable_cuda: False
+device: cuda:0
+
+# log
+wandb : True
+git_hash:

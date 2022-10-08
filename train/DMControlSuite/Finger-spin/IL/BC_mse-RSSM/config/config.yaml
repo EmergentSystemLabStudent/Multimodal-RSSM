@@ -1,7 +1,0 @@
-defaults:
-- main: main
-- env: finger-spin
-- model: model
-- train: train
-- planner: planner
-  

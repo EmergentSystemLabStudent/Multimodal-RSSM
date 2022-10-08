@@ -1,0 +1,58 @@
+# model:
+
+# -- Architecture --
+# observation_names_enc: ["image_horizon", "sound", "pose_quat_norm"]
+# observation_names_rec: ["image_horizon", "sound", "pose_quat_norm"]
+observation_names_enc: ["image_horizon", "sound"]
+observation_names_rec: ["image_horizon", "sound"]
+
+condition_names: ["d_pose_quat_v2"]
+predict_reward: False
+
+multimodal: True
+multimodal_params: # if multimodal is True, multimodal_params are used
+  fusion_method: MoPoE # NN, PoE, MoPoE
+  expert_dist: "q(st|ht,ot)" # "q(st|ht,ot)" or "q(st|ot)" (if use PoE or MoPoE)
+
+activation_function:
+  cnn: relu                     # default: relu
+  dense: elu                    # default: elu
+  fusion: relu                  # default: relu
+
+embedding_size:
+  fusion: 1024                  # default: 1024
+  image: 1024                   # default: 1024
+  sound: 256                    # default: 256
+  other: 128                    # default: 128
+
+hidden_size: 1024               # default: 200
+belief_size: 1024               # default: 200
+state_size: 128                 # default: 30
+normalization: BatchNorm # BatchNorm, InstanceNorm, GroupNorm, None # default: None
+
+
+# -- observation loss --
+worldmodel_LogProbLoss: False   # default: False
+
+
+# -- KL divergence --
+overshooting_distance: 0        # default: 0
+overshooting_kl_beta: 0         # default: 0
+overshooting_reward_scale: 0    # default: 0
+global_kl_beta: 1               # default: 1
+free_nats: 3                    # default: 3
+
+kl_beta: 1 # this is the beta param like beta-VAE  default: 1
+
+kl_balancing_alpha: 0.5 # default: 0.5
+# kl_loss =    alpha    * compute_kl(stop_grad(approx_posterior), prior)
+#         + (1 - alpha) * compute_kl(approx_posterior, stop_grad(prior))
+
+
+# -- optimization --
+learning_rate_schedule: 0         # default: 0
+adam_epsilon: 1e-7                # default: 1e-7
+# Note that original has a linear learning rate decay, but it seems unlikely that this makes a significant difference
+grad_clip_norm: 100.0             # default: 100.0
+
+model_learning_rate: 1e-3         # default: 1e-3

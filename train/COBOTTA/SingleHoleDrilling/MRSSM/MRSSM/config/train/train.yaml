@@ -1,0 +1,31 @@
+# train:
+train_data_path: 
+- ../../../../../dataset/COBOTTA/SingleHoleDrilling/dataset/train
+validation_data_path:
+- ../../../../../dataset/COBOTTA/SingleHoleDrilling/dataset/validation
+
+# Original implementation has an unlimited buffer size, but 1 million is the max experience collected anyway
+experience_size: 500_000
+
+train_iteration: 10_000
+checkpoint_interval: 1000
+validation_interval: 10
+test: False
+test_interval: 
+test_episodes: 
+
+batch_size: 50                      # default: 50
+chunk_size: 50                      # default: 50
+
+action_noise: 0.3                   # default: 0.3
+
+augmentation:
+  n_crop: 1
+  dh_base: 1
+  dw_base: 1
+  noise_scales: [0.]
+  pca_scales: [0.]
+
+use_amp: True
+
+model_path: 

@@ -1,0 +1,38 @@
+# env:
+env_config:
+  env_name: SingleHoleDrilling
+taskset_name: cobotta
+
+observation_shapes: 
+  image_horizon: [3, 64, 64]
+  image_horizon_64: [3, 64, 64]
+  image_horizon_128: [3, 128, 128]
+  image_horizon_256: [3, 256, 256]
+  image_horizon_64_bin: [1, 64, 64]
+  image_horizon_128_bin: [1, 128, 128]
+  image_horizon_256_bin: [1, 256, 256]
+  image_vertical_64: [3, 64, 64]
+  image_vertical_128: [3, 128, 128]
+  image_vertical_256: [3, 256, 256]
+  image_vertical_64_bin: [1, 64, 64]
+  image_vertical_128_bin: [1, 128, 128]
+  image_vertical_256_bin: [1, 256, 256]
+  weight_value: [1]
+  weight_value_norm: [1]
+  sound: [128, 20]
+  pose_quat: [3]
+  pose_quat_next: [3]
+  pose_quat_norm: [3]
+  pose_quat_norm_next: [3]
+  d_pose_quat_norm: [3]
+  d_pose_quat_norm_prev: [3]
+  pose_quat_v2: [3]
+  pose_quat_v2_next: [3]
+  d_pose_quat_v2: [3]
+  d_pose_quat_v2_prev: [3]
+
+action_name: "d_pose_quat_v2"
+action_size: 3
+action_repeat: 1
+bit_depth: 5
+max_episode_length: 
