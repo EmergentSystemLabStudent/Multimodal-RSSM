@@ -9,14 +9,11 @@
 *.pth
 
 # train results and logs
-train/*/*/*/*/figs
 train/*/*/*/*/results
-train/*/*/*/*/test
-train/*/*/*/*/.hydra
-train/*/*/*/*/mlruns
-train/*/*/*/*/multirun
 train/*/*/*/*/outputs
-train/*/*/*/*/tmp
+train/*/*/*/*/figs
+train/*/*/*/*/test
+train/*/*/*/*/eval_targets
 
 # visualize results
 *.gif
